@@ -45,9 +45,9 @@
                 <div class="navbar-collapse collapse ">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="../viewer/index.php">Pocetna</a></li>
-                        <!-- <li class="active"><a href="../viewer/login.php">Ulogujte se</a></li>
+                        <li class="active"><a href="../viewer/login.php">Ulogujte se</a></li>
                         <li class="active"><a href="../viewer/loginA.php">Admin</a></li>
-                        <li><a href="../viewer/contact.html">Kontakt</a></li> -->
+                        <li><a href="../viewer/contact.html">Kontakt</a></li>
                     </ul>
                 </div>
             </div>
