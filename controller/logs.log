@@ -14,3 +14,5 @@
 [05-Feb-2020 12:07:01 Europe/Berlin] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in C:\xampp\htdocs\agencija\controller\zavrsi.php on line 33
 [05-Feb-2020 12:07:20 Europe/Berlin] PHP Notice:  Undefined index: kolicina in C:\xampp\htdocs\agencija\controller\updateCart.php on line 5
 [05-Feb-2020 12:07:20 Europe/Berlin] PHP Warning:  Invalid argument supplied for foreach() in C:\xampp\htdocs\agencija\controller\updateCart.php on line 5
+[09-Feb-2020 03:20:02 Europe/Berlin] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in C:\xampp\htdocs\agencijaGitVerzija\agencija\controller\zavrsi.php on line 13
+[09-Feb-2020 03:20:02 Europe/Berlin] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in C:\xampp\htdocs\agencijaGitVerzija\agencija\controller\zavrsi.php on line 33

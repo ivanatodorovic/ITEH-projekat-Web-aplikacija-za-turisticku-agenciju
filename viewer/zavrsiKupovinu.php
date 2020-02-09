@@ -1,5 +1,5 @@
 <?php
-include('../model/konekcija.php');
+ include("../model/konekcija.php");
  $poruka = '';
 
 
@@ -8,7 +8,7 @@ include('../model/konekcija.php');
     		$user = new User($mysqli);
     		$user->login(trim($_POST['username']),trim($_POST['password']));
         if($user->getResult()){
-          header('Location: welcome.php');
+          header('Location: ../viewer/welcome.php');
         }else{
           $poruka="Neuspesno logovanje korisnika. Proverite korisnicko ime i sifru";
         }
@@ -21,8 +21,7 @@ include('../model/konekcija.php');
 <meta charset="utf-8">
 <title>Oktopod</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="" />
-<meta name="author" content="http://webthemez.com" />
+
 <!-- css -->
 <link href="css/bootstrap.min.css" rel="stylesheet" />
 <link href="css/fancybox/jquery.fancybox.css" rel="stylesheet"> 
@@ -61,9 +60,9 @@ include('../model/konekcija.php');
                 </div>
                 <div class="navbar-collapse collapse ">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="../viewer/index.php">Pocetna</a></li>
-                       
-                        <li><a href="../viewer/contact.html">Kontakt</a></li>
+                        <li class="active"><a href="../viewer/index.php">Početna</a></li>
+                        <li class="active"><a href="../viewer/logout.php">Izlogujte se</a></li>
+                        <li class="active"><a href="../viewer/cart.php">Vasa korpa</a></li>
                     </ul>
                 </div>
             </div>
@@ -75,49 +74,68 @@ include('../model/konekcija.php');
 	<section id="content">
 	
 	<section id="services" class="section pad-bot5 bg-white">
-		<div class="container">
-				<div class="row mar-bot5">
-					<div class="col-md-offset-3 col-md-6">
-						<div class="section-header">
-						<div class="wow bounceIn"data-animation-delay="7.8s">
+    <div class="container">
+        <div class="row mar-bot5">
+          <div class="col-md-12">
+            <div class="section-header">
+            <div class="wow bounceIn"data-animation-delay="7.8s">
 
-							<h2 class="section-heading animated" > Login forma</h2>
-							<h4><?php if($poruka!='') echo($poruka); ?></h4>
-
-
-              <form name="login" method="post" action="">
-
-                      <div class="form-group">
-                        <label for="username" class="cols-md-2 control-label">Korisnicko ime</label>
-                          <div class="cols-md-10">
-                              <input type="text" class="form-control" name="username" id="username"  placeholder="Korisnicko ime"/>
-                          </div>
-                      </div>
-
-                      <div class="form-group">
-                        <label for="password" class="cols-md-2 control-label">Lozinka</label>
-                          <div class="cols-md-10">
-                              <input id="password" type="text" class="form-control" name="password" id="password"  placeholder="Lozinka"/>
-                          </div>
-                      </div>
-                      <div class="form-group ">
-                        <input type="submit" name="login" class="btn btn-info btn-lg " value="Uloguj se">
-                      </div>
-                    </form>
-						</div>
-						</div>
-					</div>
-				</div>
+              <h2 class="section-heading animated" > Korpa</h2>
+              <h4 id="odgovor"></h4>
 
 
-			</div>
+                  <table class="table">
 
-		</div>
-		</section>
-	
-	
-	</section>
-	
+                          <tr>
+                              <th class="text-center">Prozivod</th>
+                              <th class="text-center">Kolicina</th>
+                              <th class="text-center">Cena</th>
+                              <th class="text-center">Ukupno</th>
+                          </tr>
+
+        <?php
+
+            $sql="SELECT * FROM proizvodi WHERE id IN (";
+
+                    foreach($_SESSION['cart'] as $id => $value) {
+                        $sql.=$id.",";
+                    }
+
+                    $sql=substr($sql, 0, -1).") ORDER BY naziv ASC";
+                    $q = mysqli_query($mysqli, $sql);
+                    $totalprice=0;
+                    while($red = mysqli_fetch_assoc($q)) {
+                        $subtotal=$_SESSION['cart'][$red['id']]['kolicina']*$red['cena'];
+                        $totalprice+=$subtotal;
+                    ?>
+                        <tr>
+                            <td><?php echo $red['naziv'] ?></td>
+                            <td><?php echo $_SESSION['cart'][$red['id']]['kolicina'] ?></td>
+                            <td><?php echo $red['cena'] ?>$</td>
+                            <td><?php echo $_SESSION['cart'][$red['id']]['kolicina']*$red['cena'] ?>$</td>
+                        </tr>
+                    <?php
+
+                    }
+                    ?>
+                    <tr>
+                        <td colspan="4">Sve ukupno: <?php echo $totalprice ?></td>
+                    </tr>
+
+                  </table>
+                  <br />
+
+                  <button id="zavrsiKupovinu" role="button" class="btn btn-info" onclick="zavrsi()">Zavrsi kupovinu </button>
+            </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+    </div>
+    </section>
 	
 	
 
@@ -167,6 +185,26 @@ include('../model/konekcija.php');
 <script src="js/jquery.magnific-popup.min.js"></script>
 <script src="js/animate.js"></script>
 <script src="js/custom.js"></script>
+
 <script>wow = new WOW({}).init();</script> 
+<script src="js/dt.js"></script>
+<script>
+  $(document).ready(function(){
+    $('#tabela').DataTable();
+    });
+  </script>
+  <script>
+
+    function zavrsi(){
+
+        $.ajax({
+          url: "../controller/zavrsi.php",
+          success: function(data){
+
+            $('#odgovor').html(data);
+        }});
+      }
+
+    </script>
 </body>
 </html>
